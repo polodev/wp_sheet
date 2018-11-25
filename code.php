@@ -211,9 +211,26 @@ if (is_author())  {
 ?>
 
 
-# custom query 
+# custom query : bring 2 post in home page 
+<?php
+$homepagePosts = new WP_Query([
+	'posts_per_page' => 2,
+	'category_name' => 'awards',
+	'post_type' => 'post', // default //page 
+]);
+
+while ( $homepagePosts->have_posts()) { $homepagePosts->the_post(); ?>
+	<div></div>
+<?php } ?>
 
 
+<?php the_time('M') ?>
+<?php the_time('d') ?>
+<?php wp_trim_words('content I want to limit', 'how many words') ?>
+<?php echo wp_trim_words(get_the_content(), 18) ?>
+<!-- at the end of the query -->
+
+<?php wp_reset_postdata(); ?>
 
 
 
