@@ -1,3 +1,12 @@
+# wordpres-snippet
+# laravel-snippet
+# react-snippet
+# php-snippet
+# express-snippet
+# angular-snippet
+# vue-snippet
+
+
 * page.php
 * single.php
 * header.php
@@ -212,6 +221,7 @@ if (is_author())  {
 
 
 # custom query : bring 2 post in home page 
+
 <?php
 $homepagePosts = new WP_Query([
 	'posts_per_page' => 2,
@@ -231,6 +241,110 @@ while ( $homepagePosts->have_posts()) { $homepagePosts->the_post(); ?>
 <!-- at the end of the query -->
 
 <?php wp_reset_postdata(); ?>
+
+# 24
+
+<?php is_archive() ?>
+<?php if(get_post_type() == 'post') {} ?>
+
+
+# 29
+
+
+
+# mu-plugins (must use plugins)
+mu-plugins >  university-post-types.php
+
+<?php 
+
+
+function university_post_types(){
+	register_post_type('event', [
+		'public' => true,
+		'has_archieve' => true,  // it will showing listing page
+		'labels' => [
+			'name' => 'Events',
+			'add_new_item' => 'Add New Event',
+			'edit_item' => 'Edit Event',
+			'all_items' => 'All Items',
+			'singular_name' => 'Event',
+		],
+		'rewrite' => [
+			'slug' => 'events'
+		],
+		'supports' => [
+			'title',
+			'content',
+			'excerpt',
+			'custom-fields'  // instead of this fields we will use ACF plugins
+		],
+		'menu_icon' => 'dashicons-calender'
+	]);
+}
+
+add_action('init', 'university_post_types');
+
+ ?>
+
+
+ # displaying custom post types
+<?php
+
+$homepageEvents = new WP_Query([
+	'post_type' => 'events',
+	'posts_per_page' => 2,
+]);
+
+while($homepageEvents->have_posts()) {
+	$homepageEvents->the_post();
+}
+
+?>
+
+* We have to save permalink again to take effect  new post type
+* single-event.php
+* single-<post_type>.php
+
+automatic post type archieve 
+
+<?php echo get_post_type_archieve_link('event') ?>
+
+
+# how to customized excerpt content 
+<?php 
+
+if (has_excerpt()) {
+	echo get_the_excerpt();
+}else {
+	wp_trim_words(get_the_content(), 18);
+}
+
+
+ ?>
+
+ # making event highlighted 
+ <?php if (get_post_type() === 'event') echo 'class=current-menu-item' ?>
+
+
+
+
+# custom fields - plugings for custom fields 
+
+* Advanced custom fields (ACF)
+* CMB2 (Custom Metaboxes 2)
+
+<?php the_field('event_date') ?>
+<?php 
+$date = get_field('event_date'); 
+$eventDate = new DateTime($date);
+echo $eventDate->format('M');
+echo $eventDate->format('d');
+
+
+ ?>
+
+
+
 
 
 
