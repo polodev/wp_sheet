@@ -170,6 +170,50 @@ wp_get_post_parent_id(get_the_ID()) ;
 <!-- here 16 was about page id which can be viewed when -->
 
 
+<!-- frontpage and blogpage setting from reading  -->
+
+
+* front-page.php
+* index.php 
+
+<?php the_excerpt(); ?>
+<?php the_permalink(); ?>
+<?php the_author_posts_link()  ?>
+<?php the_time('n.j.y')  ?>
+<?php echo get_the_category_list(', ') ?>
+
+<!-- wordpress nick name can be changed from user > nick name from dahsboard -->
+
+<?php paginate_links(); ?>
+
+<!-- Archive page - for category/ tags/ author page -->
+* archive.php
+
+
+# dynamic title  in archive page - but we will use the_archieve_title();
+
+<?php
+
+
+if ( is_category()) {
+	// category name will be here
+	single_cat_title();
+}
+if (is_author())  {
+	echo 'Posts by ' . the_author();
+}
+
+?>
+<!-- one functions do all for us for archive title -->
+<?php the_archieve_title() ?>
+<?php the_archieve_description() ?>
+
+?>
+
+
+# custom query 
+
+
 
 
 
