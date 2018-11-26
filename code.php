@@ -343,10 +343,101 @@ echo $eventDate->format('d');
 
  ?>
 
+# Custom query skill in another level # 33
+# sort by custom field 
+
+<?php 
+$today = date('Ymd');
+$homepageEvents = new WP_Query([
+	'post_type' => 'events',
+	'posts_per_page' => -1, // negetive means all 
+	'orderby' => 'meta_value_num', // rand, title, meta_value, meta_value_num
+	'order' => 'ASC',
+	'meta_key' => 'event_date', // whenever we use meta_value/meta_value_num we will use meta_key
+	'meta_query' => [
+		[
+			'key' => 'event_date',
+			'compare' => '>=',
+			'value' => $today,
+			'type' => 'numeric'
+		]
+	],
+]);
+
+ ?>
+
+
+# Manipulating Default URL based queries 
+
+
+<?php 
+
+
+function university_adjust_queries($query)
+{
+	$today = date('Ymd');
+	if (!is_admin() && is_post_type_archive('event') and $query->is_main_query()) {
+		$query->set('orderby', 'meta_value_num');
+		$query->set('order', 'asc');
+		$query->set('meta_key', 'event_date');
+		$query->set('meta_query',[
+			[
+				'key' => 'event_date',
+				'compare' => '>=',
+				'value' => $today,
+				'type' => 'numeric',
+			]
+		]);
+
+	}
+
+}
+add_action('pre_get_posts', 'university_adjust_queries');
+
+?>
+
+
+# 35 passed events
+
+slug of page is : localhost:3000/past-events/
+corresponding file name: page-past-events.php
+<?php 
 
 
 
 
+$today = date('Ymd');
+$pastEvents = new WP_Query([
+	'paged' => get_query_var('paged', 1), // pagination
+	'post_type' => 'event',
+	'posts_per_page' => 2,
+	'meta_key' => 'event_date',
+	'order' => 'asc',
+	'orderby' => 'meta_value_num',
+	'meta_query' => [
+		[
+			'key' => 'event_date',
+			'compare' => '<',
+			'value' => $today,
+			'type' => 'numeric'
+		]
+	]
+]);
+
+while($pastEvents->have_posts()) {
+	the_post();
+}
+
+echo paginate_links([
+	'total' => $pastEvents->max_num_pages
+]);
+
+// for making active menu link for is_page('past-events')
+
+
+?>
+
+# program post type - relationship with program and event
 
 
 
