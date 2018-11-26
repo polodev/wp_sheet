@@ -42,8 +42,6 @@ function university_files() {
 	wp_enqueue_script('filename whatever you want', 'file_path', 'dependency like jquery', 'version number', 'Should we place in footer boolean');
 	wp_enqueue_script('main-js-file', get_theme_file_uri('/js/main.js'), NULL, '1.0', true);
 
-
-
 	wp_enqueue_style('font_awesome', '//maxcdn.blahh.com');
 	wp_enqueue_style('name_of_stylesheet', get_stylesheet_uri());
 }
@@ -438,6 +436,33 @@ echo paginate_links([
 ?>
 
 # program post type - relationship with program and event
+
+<?php 
+
+
+function old_functions1 () {
+	register_post_type('program', [
+		'public' => true,
+		'has_archieve' => true,  // it will showing listing page
+		'labels' => [
+			'name' => 'Programs',
+			'add_new_item' => 'Add New Program',
+			'edit_item' => 'Edit Program',
+			'all_items' => 'All Items',
+			'singular_name' => 'Program',
+		],
+		'rewrite' => [
+			'slug' => 'programs'
+		],
+		'supports' => [
+			'title',
+			'content',
+		],
+		'menu_icon' => 'dashicons-calender'
+	]);
+}
+
+ ?>
 
 
 
